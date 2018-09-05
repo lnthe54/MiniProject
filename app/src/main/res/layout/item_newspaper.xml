@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/iv_newspaper"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
+
+    <TextView
+        android:id="@+id/tv_title_newspaper"
+        style="?android:textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/iv_newspaper"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/tv_title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_desc_newspaper"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title_newspaper"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/iv_newspaper"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/tv_pubDate_newspaper"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_desc_newspaper"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/iv_newspaper"
+        android:ellipsize="end"
+        android:maxLines="1" />
+</RelativeLayout>

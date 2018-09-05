@@ -15,13 +15,15 @@ import android.view.MenuItem;
 
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.PagerAdapter;
+import com.example.lnthe54.miniproject.presenter.MainPresenter;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MainPresenter.MainView {
 
     private static final String TITLE_TOOLBAR = "Tin Tức";
     private static final String NEWSPAPER = "TIN TỨC";
     private static final String SAVED = "ĐÃ LƯU";
     private static final String FAVOURITE = "YÊU THÍCH";
+    private static final String TAG = "MainActivity";
 
     private String[] permissions = {Manifest.permission.INTERNET};
     private Toolbar toolbar;
@@ -29,10 +31,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private PagerAdapter pagerAdapter;
     private TabLayout tabLayout;
 
+    private MainPresenter mainPresenter;
+
+    private String keyWord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainPresenter = new MainPresenter(this);
         if (!checkPermissions()) {
             return;
         }
@@ -69,12 +77,42 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setTitle(TITLE_TOOLBAR);
 
         tabLayout = findViewById(R.id.tab_layout);
+        mainPresenter.addTabLayout();
+
+        viewPager = findViewById(R.id.pager);
+        mainPresenter.addPagerAdapter();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_bar_main, menu);
+        MenuItem item = menu.findItem(R.id.icon_search);
+        SearchView search = (SearchView) item.getActionView();
+        search.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        keyWord = newText;
+        return false;
+    }
+
+    @Override
+    public void addTabLayout() {
         tabLayout.addTab(tabLayout.newTab().setText(NEWSPAPER));
         tabLayout.addTab(tabLayout.newTab().setText(SAVED));
         tabLayout.addTab(tabLayout.newTab().setText(FAVOURITE));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+    }
 
-        viewPager = findViewById(R.id.pager);
+    @Override
+    public void addPagerAdapter() {
         pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
@@ -95,24 +133,5 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_main, menu);
-        MenuItem item = menu.findItem(R.id.icon_search);
-        SearchView search = (SearchView) item.getActionView();
-        search.setOnQueryTextListener(this);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
     }
 }
