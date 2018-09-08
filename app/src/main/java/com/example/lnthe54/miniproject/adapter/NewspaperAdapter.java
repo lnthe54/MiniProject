@@ -48,17 +48,19 @@ public class NewspaperAdapter extends RecyclerView.Adapter<NewspaperAdapter.View
 
     public interface onCallBack {
         void itemClick(int position);
+
+        void itemLongClick(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvTitle, tvDesc, tvPubDate;
-        private ImageView ivNews;
+        private ImageView ivNewsPaper;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
 
-            ivNews = itemView.findViewById(R.id.iv_newspaper);
+            ivNewsPaper = itemView.findViewById(R.id.iv_newspaper);
             tvTitle = itemView.findViewById(R.id.tv_title_newspaper);
             tvDesc = itemView.findViewById(R.id.tv_desc_newspaper);
             tvPubDate = itemView.findViewById(R.id.tv_pubDate_newspaper);
@@ -69,13 +71,22 @@ public class NewspaperAdapter extends RecyclerView.Adapter<NewspaperAdapter.View
                     click.itemClick(getAdapterPosition());
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    click.itemLongClick(getAdapterPosition());
+                    return true;
+                }
+            });
         }
 
         public void bindData(News news) {
             tvTitle.setText(news.getTitle());
             tvDesc.setText(news.getDesc());
             tvPubDate.setText(news.getPubDate());
-            Glide.with(ivNews.getContext()).load(news.getImage()).into(ivNews);
+
+            Glide.with(itemView.getContext()).load(news.getImage()).into(ivNewsPaper);
         }
     }
 }

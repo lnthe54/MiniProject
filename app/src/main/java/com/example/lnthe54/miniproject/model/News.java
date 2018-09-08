@@ -1,10 +1,12 @@
 package com.example.lnthe54.miniproject.model;
 
+import java.io.Serializable;
+
 /**
  * @author lnthe54 on 9/4/2018
  * @project MiniProject
  */
-public class News {
+public class News implements Serializable {
     private String image;
     private String title;
     private String desc;

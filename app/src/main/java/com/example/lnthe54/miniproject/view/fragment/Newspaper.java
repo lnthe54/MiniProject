@@ -27,7 +27,8 @@ import java.util.ArrayList;
  * @author lnthe54 on 9/4/2018
  * @project MiniProject
  */
-public class Newspaper extends Fragment implements NewsAsync.XMLParserCallBack, NewspaperAdapter.onCallBack, NewspaperPresenter.Newspaper {
+public class Newspaper extends Fragment
+        implements NewsAsync.XMLParserCallBack, NewspaperAdapter.onCallBack, NewspaperPresenter.Newspaper {
     private TextView tvNotification;
     private RecyclerView rvNewspaper;
     private ArrayList<News> listNews = new ArrayList<>();
@@ -35,6 +36,7 @@ public class Newspaper extends Fragment implements NewsAsync.XMLParserCallBack, 
     private View view;
     private ProgressDialog progressDialog;
     private NewspaperPresenter newspaperPresenter;
+
 
     @Nullable
     @Override
@@ -71,6 +73,20 @@ public class Newspaper extends Fragment implements NewsAsync.XMLParserCallBack, 
 
     @Override
     public void itemClick(int position) {
+        newspaperPresenter.goWebView(position);
+    }
+
+    @Override
+    public void itemLongClick(int position) {
+//        News news = listNews.get(position);
+//        listSaved.add(news);
+//        saved.addList(listSaved);
+//
+//        Toast.makeText(getContext(), "Add successful", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void goWebView(int position) {
         String link = listNews.get(position).getLink();
         Intent openWeb = new Intent(getContext(), WebActivity.class);
         openWeb.putExtra(Config.KEY_LINK, link);

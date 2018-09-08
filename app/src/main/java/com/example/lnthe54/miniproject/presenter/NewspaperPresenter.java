@@ -11,11 +11,15 @@ public class NewspaperPresenter {
         this.news = news;
     }
 
+    public void goWebView(int position) {
+        news.goWebView(position);
+    }
     public void showData() {
         news.showData();
     }
 
     public interface Newspaper {
+        void goWebView(int position);
         void showData();
     }
 }

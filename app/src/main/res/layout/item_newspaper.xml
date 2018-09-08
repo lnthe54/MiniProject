@@ -6,9 +6,10 @@
     android:background="@android:color/white">
 
     <ImageView
+        android:layout_height="70dp"
         android:id="@+id/iv_newspaper"
         android:layout_width="70dp"
-        android:layout_height="70dp" />
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/tv_title_newspaper"
