@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private static final String NEWSPAPER = "TIN TỨC";
     private static final String SAVED = "ĐÃ LƯU";
     private static final String FAVOURITE = "YÊU THÍCH";
-    private static final String TAG = "MainActivity";
 
     private String[] permissions = {Manifest.permission.INTERNET};
     private Toolbar toolbar;
@@ -32,8 +31,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private TabLayout tabLayout;
 
     private MainPresenter mainPresenter;
-
-    private String keyWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        keyWord = newText;
         return false;
     }
 

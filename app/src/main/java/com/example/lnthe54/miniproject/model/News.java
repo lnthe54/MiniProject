@@ -4,7 +4,7 @@ package com.example.lnthe54.miniproject.model;
  * @author lnthe54 on 9/4/2018
  * @project MiniProject
  */
-public class Newspaper {
+public class News {
     private String image;
     private String title;
     private String desc;
