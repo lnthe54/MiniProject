@@ -7,21 +7,19 @@ import java.io.Serializable;
  * @project MiniProject
  */
 public class News implements Serializable {
+    private int id;
     private String image;
     private String title;
     private String desc;
     private String pubDate;
     private String link;
 
-    public News() {
+    public int getId() {
+        return id;
     }
 
-    public News(String image, String title, String desc, String pubDate, String link) {
-        this.image = image;
-        this.title = title;
-        this.desc = desc;
-        this.pubDate = pubDate;
-        this.link = link;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getImage() {

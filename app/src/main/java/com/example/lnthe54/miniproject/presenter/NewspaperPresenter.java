@@ -14,12 +14,20 @@ public class NewspaperPresenter {
     public void goWebView(int position) {
         news.goWebView(position);
     }
+
     public void showData() {
         news.showData();
     }
 
+    public void addData(int position) {
+        news.addData(position);
+    }
+
     public interface Newspaper {
         void goWebView(int position);
+
         void showData();
+
+        void addData(int position);
     }
 }

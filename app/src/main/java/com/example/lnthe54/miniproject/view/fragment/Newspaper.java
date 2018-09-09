@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.NewspaperAdapter;
 import com.example.lnthe54.miniproject.config.Config;
+import com.example.lnthe54.miniproject.db.NewsData;
 import com.example.lnthe54.miniproject.model.News;
 import com.example.lnthe54.miniproject.model.NewsAsync;
 import com.example.lnthe54.miniproject.presenter.NewspaperPresenter;
@@ -33,12 +34,12 @@ public class Newspaper extends Fragment
     private TextView tvNotification;
     private RecyclerView rvNewspaper;
     private ArrayList<News> listNews = new ArrayList<>();
-    private static String TAG = "Newspaper";
     private NewspaperAdapter newspaperAdapter;
     private View view;
     private ProgressDialog progressDialog;
     private NewspaperPresenter newspaperPresenter;
-    protected ArrayList<News> listNewsSaved = new ArrayList<>();
+
+    private NewsData newsData;
 
     @Nullable
     @Override
@@ -59,6 +60,9 @@ public class Newspaper extends Fragment
         tvNotification = view.findViewById(R.id.tv_notification);
         rvNewspaper = view.findViewById(R.id.rv_newspaper);
         newspaperPresenter.showData();
+
+        newsData = new NewsData(getContext());
+        newsData.open();
     }
 
     private void initDialog() {
@@ -80,23 +84,7 @@ public class Newspaper extends Fragment
 
     @Override
     public void itemLongClick(int position) {
-        News news = listNews.get(position);
-        String mTitle = news.getTitle();
-        String mImage = news.getImage();
-        String mDesc = news.getDesc();
-        String mPubDate = news.getPubDate();
-        String mLink = news.getLink();
-
-//        listNewsSaved.add(new News(mImage, mTitle, mDesc, mPubDate, mLink));
-
-
-        Saved saved = new Saved();
-        Bundle b = new Bundle();
-        b.putSerializable("A", news);
-
-        saved.setArguments(b);
-
-        Toast.makeText(getContext(), "Add " + listNewsSaved.size(), Toast.LENGTH_SHORT).show();
+        newspaperPresenter.addData(position);
     }
 
     @Override
@@ -119,5 +107,25 @@ public class Newspaper extends Fragment
         }
         newspaperAdapter = new NewspaperAdapter(this, listNews);
         rvNewspaper.setAdapter(newspaperAdapter);
+    }
+
+    @Override
+    public void addData(int position) {
+        News news = listNews.get(position);
+        String title = news.getTitle();
+        String desc = news.getDesc();
+        String link = news.getLink();
+        String img = news.getImage();
+        String pubDate = news.getPubDate();
+
+        newsData.addNews(title, desc, link, img, pubDate);
+
+        Toast.makeText(getContext(), "Add successful", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        newsData.close();
     }
 }
