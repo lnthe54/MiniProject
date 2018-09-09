@@ -13,6 +13,17 @@ public class News implements Serializable {
     private String pubDate;
     private String link;
 
+    public News() {
+    }
+
+    public News(String image, String title, String desc, String pubDate, String link) {
+        this.image = image;
+        this.title = title;
+        this.desc = desc;
+        this.pubDate = pubDate;
+        this.link = link;
+    }
+
     public String getImage() {
         return image;
     }

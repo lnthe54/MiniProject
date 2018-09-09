@@ -1,7 +1,5 @@
 package com.example.lnthe54.miniproject.model;
 
-import android.util.Log;
-
 import com.example.lnthe54.miniproject.config.Config;
 
 import org.xml.sax.Attributes;
@@ -76,7 +74,6 @@ public class NewsXMLParser extends DefaultHandler {
                 index = value.indexOf(desc) + desc.length();
                 String s = value.substring(index);
                 String description = s.substring(0, s.indexOf("</font>"));
-                Log.d(TAG, "desc: " + description);
                 news.setDesc(description);
                 break;
             }

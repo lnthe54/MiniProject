@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.NewspaperAdapter;
@@ -32,11 +33,12 @@ public class Newspaper extends Fragment
     private TextView tvNotification;
     private RecyclerView rvNewspaper;
     private ArrayList<News> listNews = new ArrayList<>();
+    private static String TAG = "Newspaper";
     private NewspaperAdapter newspaperAdapter;
     private View view;
     private ProgressDialog progressDialog;
     private NewspaperPresenter newspaperPresenter;
-
+    protected ArrayList<News> listNewsSaved = new ArrayList<>();
 
     @Nullable
     @Override
@@ -45,7 +47,7 @@ public class Newspaper extends Fragment
         view = inflater.inflate(R.layout.fragment_newspaper, parent, false);
         newspaperPresenter = new NewspaperPresenter(this);
 
-        String link = "https://news.google.de/news/feeds?pz=1&cf=vi_vn&ned=vi_vn&hl=vi_vn&q=(u23%20viet%20nam)";
+        String link = "https://news.google.de/news/feeds?pz=1&cf=vi_vn&ned=vi_vn&hl=vi_vn&q=(ho%CC%80a%20minzy)";
         NewsAsync async = new NewsAsync(this);
         async.execute(link);
 
@@ -78,11 +80,23 @@ public class Newspaper extends Fragment
 
     @Override
     public void itemLongClick(int position) {
-//        News news = listNews.get(position);
-//        listSaved.add(news);
-//        saved.addList(listSaved);
-//
-//        Toast.makeText(getContext(), "Add successful", Toast.LENGTH_SHORT).show();
+        News news = listNews.get(position);
+        String mTitle = news.getTitle();
+        String mImage = news.getImage();
+        String mDesc = news.getDesc();
+        String mPubDate = news.getPubDate();
+        String mLink = news.getLink();
+
+//        listNewsSaved.add(new News(mImage, mTitle, mDesc, mPubDate, mLink));
+
+
+        Saved saved = new Saved();
+        Bundle b = new Bundle();
+        b.putSerializable("A", news);
+
+        saved.setArguments(b);
+
+        Toast.makeText(getContext(), "Add " + listNewsSaved.size(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

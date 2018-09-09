@@ -1,6 +1,6 @@
 package com.example.lnthe54.miniproject.view.activity;
 
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,21 +12,23 @@ import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.config.Config;
 import com.example.lnthe54.miniproject.presenter.WebViewPresenter;
 
+import dmax.dialog.SpotsDialog;
+
 /**
  * @author lnthe54 on 9/8/2018
  * @project MiniProject
  */
 public class WebActivity extends AppCompatActivity implements WebViewPresenter.WebView {
     private WebView webNews;
-    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
     private WebViewPresenter webView;
     private String link;
     private WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            if (progressDialog != null && progressDialog.isShowing()) {
-                progressDialog.dismiss();
+            if (alertDialog != null && alertDialog.isShowing()) {
+                alertDialog.dismiss();
             }
         }
     };
@@ -49,6 +51,7 @@ public class WebActivity extends AppCompatActivity implements WebViewPresenter.W
 
     private void initViews() {
         initDialog();
+
         webNews = findViewById(R.id.web_news);
         webView.loadData();
     }
@@ -58,13 +61,12 @@ public class WebActivity extends AppCompatActivity implements WebViewPresenter.W
         webNews.getSettings().setSupportZoom(true);
         webNews.loadUrl(link);
         webNews.setWebViewClient(webViewClient);
-        progressDialog.show();
+        alertDialog.show();
     }
 
     private void initDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(Config.PROGRESS_TEXT);
-        progressDialog.setCancelable(false);
+        alertDialog = new SpotsDialog(this, R.style.Custom);
+        alertDialog.setCancelable(false);
     }
 
     @Override

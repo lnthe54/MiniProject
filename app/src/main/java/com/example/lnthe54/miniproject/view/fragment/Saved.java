@@ -30,6 +30,8 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
     private View view;
     private ArrayList<News> listNews = new ArrayList<>();
     private SavedPresenter savedPresenter;
+    private static String TAG = "Saved";
+    private Newspaper newspaper = new Newspaper();
 
     @Nullable
     @Override
@@ -38,6 +40,7 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
         view = inflater.inflate(R.layout.fragment_saved, parent, false);
 
         savedPresenter = new SavedPresenter(this);
+
         initViews();
         return view;
     }
@@ -49,8 +52,18 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
                 LinearLayoutManager.VERTICAL, false));
         rvSaved.setHasFixedSize(true);
 
+        if (listNews.size() != 0) {
+            tvNotification.setVisibility(View.INVISIBLE);
+            rvSaved.setVisibility(View.VISIBLE);
+        }
         newspaperAdapter = new NewspaperAdapter(this, listNews);
+        newspaperAdapter.notifyDataSetChanged();
         rvSaved.setAdapter(newspaperAdapter);
+    }
+
+    private void addList(ArrayList<News> newList) {
+        listNews.addAll(newList);
+//        newspaperAdapter.notifyDataSetChanged();
     }
 
     @Override
