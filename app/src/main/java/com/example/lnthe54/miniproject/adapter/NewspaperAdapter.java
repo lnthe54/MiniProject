@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.model.News;
 
@@ -86,7 +87,10 @@ public class NewspaperAdapter extends RecyclerView.Adapter<NewspaperAdapter.View
             tvDesc.setText(news.getDesc());
             tvPubDate.setText(news.getPubDate());
 
-            Glide.with(itemView.getContext()).load(news.getImage()).into(ivNewsPaper);
+            Glide.with(itemView.getContext())
+                    .load(news.getImage())
+                    .apply(new RequestOptions().centerCrop())
+                    .into(ivNewsPaper);
         }
     }
 }

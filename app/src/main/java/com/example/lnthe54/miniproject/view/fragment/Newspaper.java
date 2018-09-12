@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -102,6 +103,10 @@ public class Newspaper extends Fragment
     public void onParseResult(ArrayList<News> list) {
         listNews.removeAll(listNews);
         listNews.addAll(list);
+        if (listNews.size() != 0) {
+            tvNotification.setVisibility(View.INVISIBLE);
+            rvNewspaper.setVisibility(View.VISIBLE);
+        }
         newspaperAdapter.notifyDataSetChanged();
     }
 
@@ -146,13 +151,13 @@ public class Newspaper extends Fragment
     public void showData() {
         rvNewspaper.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        rvNewspaper.addItemDecoration(divider);
         rvNewspaper.setHasFixedSize(true);
-        if (listNews != null) {
-            tvNotification.setVisibility(View.INVISIBLE);
-            rvNewspaper.setVisibility(View.VISIBLE);
-        }
         newspaperAdapter = new NewspaperAdapter(this, listNews);
+
         rvNewspaper.setAdapter(newspaperAdapter);
+
     }
 
     @Override
@@ -165,7 +170,6 @@ public class Newspaper extends Fragment
         String pubDate = news.getPubDate();
 
         newsData.addNews(title, desc, link, img, pubDate);
-
         toast.show();
     }
 

@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="2dp"
-    android:layout_marginTop="5dp"
-    android:background="@drawable/shadow_bg_recycler">
+    android:layout_margin="5dp"
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/iv_newspaper"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:padding="5dp" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:paddingBottom="2.5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="2.5dp" />
 
     <TextView
         android:id="@+id/tv_title_newspaper"
@@ -22,19 +23,33 @@
         android:layout_toRightOf="@+id/iv_newspaper"
         android:ellipsize="end"
         android:maxLines="1"
+        android:padding="5dp"
         android:textColor="@color/tv_title"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="30dp"
+        android:layout_height="1dp"
+        android:layout_below="@id/tv_title_newspaper"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/iv_newspaper"
+        android:background="@color/line"
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/tv_desc_newspaper"
         style="?android:textAppearanceSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title_newspaper"
+        android:layout_below="@id/line"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/iv_newspaper"
+        android:drawableLeft="@drawable/ic_news"
+        android:drawablePadding="5dp"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLines="2"
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/tv_pubDate_newspaper"
@@ -44,6 +59,9 @@
         android:layout_below="@id/tv_desc_newspaper"
         android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/iv_newspaper"
+        android:drawableLeft="@drawable/ic_time"
+        android:drawablePadding="5dp"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:padding="5dp" />
 </RelativeLayout>

@@ -5,4 +5,20 @@
     <string name="tv_like">Yêu Thích</string>
     <string name="tv_delete">Xóa</string>
     <string name="tv_saved">Saved</string>
+    <string name="ic_introduce">Introduce</string>
+    <string name="tv_introduce">Introduce</string>
+    <string name="tv_content">Project: Filter news \n
+        Học viên: Lê Ngọc Thế \n
+        Lớp: LAND1804E \n
+        Giảng viên hướng dẫn: Nguyễn Văn Bắc \n
+        - Tin tức: hiển thị danh sách tin tức tìm kiếm đc theo từ khóa. \n
+        - Đã lưu: là danh sách tin tức lưu lại để đọc offline.\n
+        - Yêu thích: danh sách tin tức đã lưu lại nhưng được thêm vào danh sách yêu thích để lần sau tìm lại sẽ dễ dàng hơn. \n
+        - Khi lick vào các item trên list sẽ thực hiện mở nội dung của bài báo. \n
+        - Khi long click vào 1 item trên danh sách list tin tức sẽ thực hiện lưu tin tức đó lại để đọc offline. \n
+        - Khi long click vào item trên danh sách đã lưu sẽ hiển thị ra 1 popup menu.\n
+        - Chọn yêu thích sẽ thêm item đó vào danh sách yêu thích. \n
+        - Chọn xóa sẽ thực hiện xóa khỏi danh sách đã lưu.
+
+    </string>
 </resources>

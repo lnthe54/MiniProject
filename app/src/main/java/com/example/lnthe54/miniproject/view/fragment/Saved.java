@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,8 +27,6 @@ import com.example.lnthe54.miniproject.presenter.SavedPresenter;
 import com.example.lnthe54.miniproject.view.activity.WebActivity;
 
 import java.util.ArrayList;
-
-import static android.support.constraint.Constraints.TAG;
 
 /**
  * @author lnthe54 on 9/4/2018
@@ -52,6 +50,9 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
         savedPresenter = new SavedPresenter(this);
         setHasOptionsMenu(true);
         initViews();
+        savedPresenter.setAdapter();
+        savedPresenter.showData();
+
         return view;
     }
 
@@ -61,7 +62,8 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
         newsData = new NewsData(getContext());
         setHasOptionsMenu(true);
         newsData.open();
-        savedPresenter.showData();
+//        savedPresenter.showData();
+
     }
 
     @Override
@@ -94,13 +96,14 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
 
     @Override
     public void setAdapter() {
+        listNews = newsData.getNews();
         if (newspaperAdapter == null) {
             newspaperAdapter = new NewspaperAdapter(this, listNews);
             rvSaved.setAdapter(newspaperAdapter);
+            newspaperAdapter.notifyDataSetChanged();
         } else {
             newspaperAdapter.notifyDataSetChanged();
         }
-
     }
 
     @Override
@@ -116,10 +119,12 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
     public void showData() {
         rvSaved.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        rvSaved.addItemDecoration(divider);
         rvSaved.setHasFixedSize(true);
 
-        savedPresenter.setAdapter();
         savedPresenter.updateList();
+        savedPresenter.setAdapter();
         if (listNews.size() != 0) {
             tvNotification.setVisibility(View.INVISIBLE);
             rvSaved.setVisibility(View.VISIBLE);
@@ -130,8 +135,6 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
     public void goWebView(int position) {
         Intent openWeb = new Intent(getContext(), WebActivity.class);
         String link = listNews.get(position).getLink();
-
-        Log.d(TAG, "goWebView: " + link);
         openWeb.putExtra(Config.KEY_LINK, link);
         startActivity(openWeb);
     }
@@ -147,7 +150,7 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
             @Override
             public void onClick(View view) {
                 newsData.delNews(listNews.get(position).getId());
-                newspaperAdapter.notifyDataSetChanged();
+                savedPresenter.updateList();
                 dialog.cancel();
             }
         });

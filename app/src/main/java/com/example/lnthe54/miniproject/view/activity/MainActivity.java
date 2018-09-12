@@ -1,6 +1,7 @@
 package com.example.lnthe54.miniproject.view.activity;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.PagerAdapter;
@@ -78,6 +82,16 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.icon_introduce: {
+                mainPresenter.showIntroduce();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void addTabLayout() {
         tabLayout.addTab(tabLayout.newTab().setText(NEWSPAPER));
         tabLayout.addTab(tabLayout.newTab().setText(SAVED));
@@ -107,5 +121,21 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
 
             }
         });
+    }
+
+    @Override
+    public void showIntroduce() {
+        final Dialog dialogIntroduce = new Dialog(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+        dialogIntroduce.setContentView(R.layout.dialog_introduce);
+        ImageButton imgBtnClose = dialogIntroduce.findViewById(R.id.btn_close);
+
+        imgBtnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogIntroduce.cancel();
+            }
+        });
+        setFinishOnTouchOutside(false);
+        dialogIntroduce.show();
     }
 }

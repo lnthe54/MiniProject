@@ -20,7 +20,7 @@ public class NewsData {
     private SQLiteOpenHelper sqlOpenHelper;
     private SQLiteDatabase sqlDB;
 
-    private String[] allColums = {
+    private String[] allColumns = {
             NewsSQLite.ID,
             NewsSQLite.TITLE,
             NewsSQLite.DESC,
@@ -57,12 +57,12 @@ public class NewsData {
 
     public void delNews(int id) {
         sqlDB.delete(NewsSQLite.TABLE_NAME, NewsSQLite.ID + "=" + id, null);
-        Toast.makeText(this.context, "Delete note successful", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.context, "Delete successful", Toast.LENGTH_SHORT).show();
     }
 
     public ArrayList<News> getNews() {
         ArrayList<News> listNote = new ArrayList<>();
-        Cursor cursor = sqlDB.query(NewsSQLite.TABLE_NAME, allColums, null, null, null, null, null);
+        Cursor cursor = sqlDB.query(NewsSQLite.TABLE_NAME, allColumns, null, null, null, null, null);
         if (cursor == null) {
             return null;
         }

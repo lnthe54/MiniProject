@@ -7,4 +7,5 @@
     <color name="_tab_text_color">#DDDDDD</color>
     <color name="bg_main">#DDDDDD</color>
     <color name="tv_title">#66CCFF</color>
+    <color name="line">#66ccff</color>
 </resources>
