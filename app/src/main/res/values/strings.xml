@@ -4,4 +4,5 @@
     <string name="tv_notification">Không có bài viết nào để hiển thị.</string>
     <string name="tv_like">Yêu Thích</string>
     <string name="tv_delete">Xóa</string>
+    <string name="tv_saved">Saved</string>
 </resources>

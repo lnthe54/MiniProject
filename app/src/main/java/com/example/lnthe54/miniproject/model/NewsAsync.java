@@ -1,6 +1,9 @@
 package com.example.lnthe54.miniproject.model;
 
+import android.content.Context;
 import android.os.AsyncTask;
+
+import com.example.lnthe54.miniproject.R;
 
 import java.util.ArrayList;
 
@@ -13,15 +16,17 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class NewsAsync extends AsyncTask<String, Void, ArrayList<News>> {
     private XMLParserCallBack callBack;
+    private Context context;
 
-    public NewsAsync(XMLParserCallBack callBack) {
+    public NewsAsync(Context context, XMLParserCallBack callBack) {
         this.callBack = callBack;
+        this.context = context;
     }
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
+        callBack.initDialog(context, R.style.Custom);
     }
 
     @Override
@@ -45,9 +50,14 @@ public class NewsAsync extends AsyncTask<String, Void, ArrayList<News>> {
     protected void onPostExecute(ArrayList<News> news) {
         super.onPostExecute(news);
         callBack.onParseResult(news);
+        callBack.dismissDialog();
     }
 
     public interface XMLParserCallBack {
         void onParseResult(ArrayList<News> listNews);
+
+        void initDialog(Context context, int style);
+
+        void dismissDialog();
     }
 }

@@ -8,16 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.PagerAdapter;
 import com.example.lnthe54.miniproject.presenter.MainPresenter;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MainPresenter.MainView {
+public class MainActivity extends AppCompatActivity implements MainPresenter.MainView {
 
     private static final String TITLE_TOOLBAR = "Tin Tức";
     private static final String NEWSPAPER = "TIN TỨC";
@@ -78,25 +75,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         viewPager = findViewById(R.id.pager);
         mainPresenter.addPagerAdapter();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_main, menu);
-        MenuItem item = menu.findItem(R.id.icon_search);
-        SearchView search = (SearchView) item.getActionView();
-        search.setOnQueryTextListener(this);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
     }
 
     @Override

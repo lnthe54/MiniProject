@@ -11,6 +11,10 @@ public class NewspaperPresenter {
         this.news = news;
     }
 
+    public void searchViews(String keySearch) {
+        news.searchNews(keySearch);
+    }
+
     public void goWebView(int position) {
         news.goWebView(position);
     }
@@ -24,6 +28,9 @@ public class NewspaperPresenter {
     }
 
     public interface Newspaper {
+
+        void searchNews(String keySearch);
+
         void goWebView(int position);
 
         void showData();

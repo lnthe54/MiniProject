@@ -8,8 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -30,7 +34,7 @@ import static android.support.constraint.Constraints.TAG;
  * @author lnthe54 on 9/4/2018
  * @project MiniProject
  */
-public class Saved extends Fragment implements NewspaperAdapter.onCallBack, SavedPresenter.View {
+public class Saved extends Fragment implements NewspaperAdapter.onCallBack, SavedPresenter.View, SearchView.OnQueryTextListener {
     private TextView tvNotification;
     private RecyclerView rvSaved;
     private NewspaperAdapter newspaperAdapter;
@@ -46,7 +50,7 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
         view = inflater.inflate(R.layout.fragment_saved, parent, false);
 
         savedPresenter = new SavedPresenter(this);
-
+        setHasOptionsMenu(true);
         initViews();
         return view;
     }
@@ -55,8 +59,27 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
         tvNotification = view.findViewById(R.id.tv_notification);
         rvSaved = view.findViewById(R.id.rv_saved);
         newsData = new NewsData(getContext());
+        setHasOptionsMenu(true);
         newsData.open();
         savedPresenter.showData();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.action_bar_main, menu);
+        MenuItem item = menu.findItem(R.id.icon_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 
     @Override
@@ -95,12 +118,12 @@ public class Saved extends Fragment implements NewspaperAdapter.onCallBack, Save
                 LinearLayoutManager.VERTICAL, false));
         rvSaved.setHasFixedSize(true);
 
+        savedPresenter.setAdapter();
         savedPresenter.updateList();
         if (listNews.size() != 0) {
             tvNotification.setVisibility(View.INVISIBLE);
             rvSaved.setVisibility(View.VISIBLE);
         }
-        savedPresenter.setAdapter();
     }
 
     @Override
