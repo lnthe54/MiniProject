@@ -2,6 +2,7 @@ package com.example.lnthe54.miniproject.view.activity;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,17 +18,20 @@ import android.widget.ImageButton;
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.PagerAdapter;
 import com.example.lnthe54.miniproject.presenter.MainPresenter;
+import com.example.lnthe54.miniproject.receiver.InternetReceiver;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.MainView, ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity
+        implements MainPresenter.MainView, ViewPager.OnPageChangeListener {
 
     private static final String TITLE_TOOLBAR = "Tin Tức";
 
     private String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE};
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_NETWORK_STATE};
     private Toolbar toolbar;
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
     private TabLayout tabLayout;
+    private InternetReceiver receiver;
 
     private MainPresenter mainPresenter;
 
@@ -125,5 +129,23 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initBroadCastReceiver();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+    private void initBroadCastReceiver() {
+        receiver = new InternetReceiver();
+        final IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(receiver, filter);
     }
 }
