@@ -18,14 +18,12 @@ import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.PagerAdapter;
 import com.example.lnthe54.miniproject.presenter.MainPresenter;
 
-public class MainActivity extends AppCompatActivity implements MainPresenter.MainView {
+public class MainActivity extends AppCompatActivity implements MainPresenter.MainView, ViewPager.OnPageChangeListener {
 
     private static final String TITLE_TOOLBAR = "Tin Tức";
-    private static final String NEWSPAPER = "TIN TỨC";
-    private static final String SAVED = "ĐÃ LƯU";
-    private static final String FAVOURITE = "YÊU THÍCH";
 
-    private String[] permissions = {Manifest.permission.INTERNET};
+    private String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE};
     private Toolbar toolbar;
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
@@ -75,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
         setTitle(TITLE_TOOLBAR);
 
         tabLayout = findViewById(R.id.tab_layout);
-        mainPresenter.addTabLayout();
-
         viewPager = findViewById(R.id.pager);
         mainPresenter.addPagerAdapter();
     }
@@ -92,35 +88,12 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
     }
 
     @Override
-    public void addTabLayout() {
-        tabLayout.addTab(tabLayout.newTab().setText(NEWSPAPER));
-        tabLayout.addTab(tabLayout.newTab().setText(SAVED));
-        tabLayout.addTab(tabLayout.newTab().setText(FAVOURITE));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-    }
-
-    @Override
     public void addPagerAdapter() {
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(pagerAdapter.getCount());
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        viewPager.addOnPageChangeListener(this);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -137,5 +110,20 @@ public class MainActivity extends AppCompatActivity implements MainPresenter.Mai
         });
         setFinishOnTouchOutside(false);
         dialogIntroduce.show();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

@@ -21,4 +21,6 @@
         - Chọn xóa sẽ thực hiện xóa khỏi danh sách đã lưu.
 
     </string>
+    <string name="icon_voice">Voice</string>
+    <string name="tv_favourite">Yêu thích</string>
 </resources>

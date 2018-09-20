@@ -27,6 +27,10 @@ public class NewspaperPresenter {
         news.addData(position);
     }
 
+    public void voiceSearch() {
+        news.voiceSearch();
+    }
+
     public interface Newspaper {
 
         void searchNews(String keySearch);
@@ -36,5 +40,7 @@ public class NewspaperPresenter {
         void showData();
 
         void addData(int position);
+
+        void voiceSearch();
     }
 }

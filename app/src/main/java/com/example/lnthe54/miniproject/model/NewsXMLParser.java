@@ -16,7 +16,6 @@ public class NewsXMLParser extends DefaultHandler {
     private ArrayList<News> listNew = new ArrayList<>();
     private News news;
     private String value;
-    private static String TAG = "NewsXMLParser";
 
     private boolean allow_item = false;
     private boolean allow_link = false;

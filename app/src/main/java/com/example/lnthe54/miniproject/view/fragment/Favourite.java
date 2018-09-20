@@ -23,6 +23,14 @@ import com.example.lnthe54.miniproject.R;
 public class Favourite extends Fragment implements SearchView.OnQueryTextListener {
     private TextView tvNotification;
     private RecyclerView rvFavourite;
+    private static Favourite instance;
+
+    public static Favourite getInstance() {
+        if (instance == null) {
+            instance = new Favourite();
+        }
+        return instance;
+    }
 
     @Nullable
     @Override

@@ -1,5 +1,6 @@
 package com.example.lnthe54.miniproject.adapter;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -13,29 +14,28 @@ import com.example.lnthe54.miniproject.view.fragment.Saved;
  * @project MiniProject
  */
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    private int tab;
 
-    public PagerAdapter(FragmentManager fm, int tab) {
+    private static final String NEWSPAPER = "TIN TỨC";
+    private static final String SAVED = "ĐÃ LƯU";
+    private static final String FAVOURITE = "YÊU THÍCH";
+
+    public PagerAdapter(FragmentManager fm) {
         super(fm);
-        this.tab = tab;
     }
 
     @Override
     public Fragment getItem(int position) {
         switch (position) {
             case 0: {
-                Newspaper newspaper = new Newspaper();
-                return newspaper;
+                return Newspaper.getInstance();
             }
 
             case 1: {
-                Saved saved = new Saved();
-                return saved;
+                return Saved.getInstance();
             }
 
             case 2: {
-                Favourite favourite = new Favourite();
-                return favourite;
+                return Favourite.getInstance();
             }
 
             default:
@@ -45,6 +45,23 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return tab;
+        return 3;
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0: {
+                return NEWSPAPER;
+            }
+            case 1: {
+                return SAVED;
+            }
+            case 2: {
+                return FAVOURITE;
+            }
+        }
+        return super.getPageTitle(position);
     }
 }

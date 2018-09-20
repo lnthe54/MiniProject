@@ -12,6 +12,6 @@ public interface Config {
     String LINK = "link";
 
     String KEY_LINK = "key link";
-
+    String NAME_FOLDER = "App filter news";
     String PROGRESS_TEXT = "Vui lòng chờ...";
 }

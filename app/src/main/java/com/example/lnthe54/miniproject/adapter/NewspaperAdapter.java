@@ -50,7 +50,7 @@ public class NewspaperAdapter extends RecyclerView.Adapter<NewspaperAdapter.View
     public interface onCallBack {
         void itemClick(int position);
 
-        void itemLongClick(int position);
+        void itemLongClick(View view, int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -76,7 +76,7 @@ public class NewspaperAdapter extends RecyclerView.Adapter<NewspaperAdapter.View
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    click.itemLongClick(getAdapterPosition());
+                    click.itemLongClick(view, getAdapterPosition());
                     return true;
                 }
             });

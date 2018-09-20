@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -19,6 +20,7 @@ import dmax.dialog.SpotsDialog;
  * @project MiniProject
  */
 public class WebActivity extends AppCompatActivity implements WebViewPresenter.WebView {
+    private static final String TAG = "WebActivity";
     private WebView webNews;
     private AlertDialog alertDialog;
     private WebViewPresenter webView;
@@ -47,6 +49,7 @@ public class WebActivity extends AppCompatActivity implements WebViewPresenter.W
     public void getDataIntent() {
         Intent getIntent = getIntent();
         link = getIntent.getStringExtra(Config.KEY_LINK);
+        Log.d(TAG, "Link: " + link);
     }
 
     private void initViews() {
@@ -60,13 +63,18 @@ public class WebActivity extends AppCompatActivity implements WebViewPresenter.W
     public void loadData() {
         webNews.getSettings().setSupportZoom(true);
         webNews.loadUrl(link);
+        webNews.getSettings().setJavaScriptEnabled(true);
+        webNews.getSettings().setUseWideViewPort(true);
+        webNews.getSettings().setLoadWithOverviewMode(true);
+        webNews.getSettings().setBuiltInZoomControls(true);
+        webNews.getSettings().setDisplayZoomControls(false);
         webNews.setWebViewClient(webViewClient);
         alertDialog.show();
     }
 
     private void initDialog() {
         alertDialog = new SpotsDialog(this, R.style.Custom);
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
     }
 
     @Override

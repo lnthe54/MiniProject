@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import com.example.lnthe54.miniproject.model.News;
 
@@ -57,12 +56,12 @@ public class NewsData {
 
     public void delNews(int id) {
         sqlDB.delete(NewsSQLite.TABLE_NAME, NewsSQLite.ID + "=" + id, null);
-        Toast.makeText(this.context, "Delete successful", Toast.LENGTH_SHORT).show();
     }
 
     public ArrayList<News> getNews() {
         ArrayList<News> listNote = new ArrayList<>();
-        Cursor cursor = sqlDB.query(NewsSQLite.TABLE_NAME, allColumns, null, null, null, null, null);
+        Cursor cursor = sqlDB.query(NewsSQLite.TABLE_NAME, allColumns,
+                null, null, null, null, null);
         if (cursor == null) {
             return null;
         }

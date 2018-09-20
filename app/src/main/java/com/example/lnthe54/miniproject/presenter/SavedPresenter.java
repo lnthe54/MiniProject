@@ -1,47 +1,37 @@
 package com.example.lnthe54.miniproject.presenter;
 
+import android.view.View;
+
 /**
  * @author lnthe54 on 9/8/2018
  * @project MiniProject
  */
 public class SavedPresenter {
-    private View view;
+    private Presenter presenter;
 
-    public SavedPresenter(View view) {
-        this.view = view;
+    public SavedPresenter(Presenter presenter) {
+        this.presenter = presenter;
     }
 
     public void setAdapter() {
-        view.setAdapter();
-    }
-
-    public void updateList() {
-        view.update();
-    }
-
-    public void showData() {
-        view.showData();
+        presenter.setAdapter();
     }
 
     public void goWebView(int position) {
-        view.goWebView(position);
+        presenter.goWebView(position);
     }
 
-    public void showDialog(int position) {
-        view.showDialog(position);
+    public void showPopupMenu(View view, int position) {
+        presenter.showPopupMenu(view, position);
     }
 
-    public interface View {
+    public interface Presenter {
 
         void setAdapter();
 
-        void update();
-
-        void showData();
-
         void goWebView(int position);
 
-        void showDialog(int position);
+        void showPopupMenu(View view, int position);
 
     }
 }

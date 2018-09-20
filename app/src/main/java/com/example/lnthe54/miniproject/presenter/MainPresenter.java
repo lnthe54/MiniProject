@@ -11,10 +11,6 @@ public class MainPresenter {
         this.mainView = mainView;
     }
 
-    public void addTabLayout() {
-        mainView.addTabLayout();
-    }
-
     public void addPagerAdapter() {
         mainView.addPagerAdapter();
     }
@@ -23,7 +19,6 @@ public class MainPresenter {
         mainView.showIntroduce();
     }
     public interface MainView {
-        void addTabLayout();
 
         void addPagerAdapter();
 

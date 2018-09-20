@@ -1,31 +1,35 @@
 package com.example.lnthe54.miniproject.view.fragment;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lnthe54.miniproject.R;
 import com.example.lnthe54.miniproject.adapter.NewspaperAdapter;
 import com.example.lnthe54.miniproject.config.Config;
 import com.example.lnthe54.miniproject.db.NewsData;
+import com.example.lnthe54.miniproject.model.DownloadFile;
 import com.example.lnthe54.miniproject.model.News;
 import com.example.lnthe54.miniproject.model.NewsAsync;
 import com.example.lnthe54.miniproject.presenter.NewspaperPresenter;
@@ -35,13 +39,19 @@ import java.util.ArrayList;
 
 import dmax.dialog.SpotsDialog;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * @author lnthe54 on 9/4/2018
  * @project MiniProject
  */
 public class Newspaper extends Fragment
         implements NewsAsync.XMLParserCallBack, NewspaperAdapter.onCallBack,
-        NewspaperPresenter.Newspaper, SearchView.OnQueryTextListener {
+        NewspaperPresenter.Newspaper, SearchView.OnQueryTextListener, DownloadFile.onCallBack {
+
+    private static final int REQUEST_CODE = 0;
+    private static final String MESSAGE = "Đã lưu";
+    private static final String TAG = "Newspaper";
     private TextView tvNotification;
     private RecyclerView rvNewspaper;
     private ArrayList<News> listNews = new ArrayList<>();
@@ -51,20 +61,28 @@ public class Newspaper extends Fragment
     private String keySearch;
     private NewsData newsData;
     private NewsAsync async;
+    private static Newspaper instance;
     private String link;
-    private Toast toast;
     private AlertDialog alertDialog;
+    private DownloadFile downloadFile;
+    private SearchView searchView;
+    private Snackbar snackbar;
+    private ProgressBar progressBarDownload;
+    private ProgressDialog progressDialog;
+
+    public static Newspaper getInstance() {
+        if (instance == null) {
+            instance = new Newspaper();
+        }
+        return instance;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_newspaper, parent, false);
-        View layout_toast = inflater.inflate(R.layout.toast, (ViewGroup) view.findViewById(R.id.layout_toast));
-        toast = new Toast(getContext().getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout_toast);
+        snackbar = Snackbar.make(parent, MESSAGE, Snackbar.LENGTH_SHORT);
         newspaperPresenter = new NewspaperPresenter(this);
         setHasOptionsMenu(true);
         initViews();
@@ -74,6 +92,7 @@ public class Newspaper extends Fragment
     private void initViews() {
         tvNotification = view.findViewById(R.id.tv_notification);
         rvNewspaper = view.findViewById(R.id.rv_newspaper);
+        progressBarDownload = view.findViewById(R.id.progress_download);
         newspaperPresenter.showData();
         newsData = new NewsData(getContext());
         newsData.open();
@@ -83,8 +102,31 @@ public class Newspaper extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.action_bar_main, menu);
         MenuItem item = menu.findItem(R.id.icon_search);
-        SearchView searchView = (SearchView) item.getActionView();
+        searchView = (SearchView) item.getActionView();
         searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.icon_voice: {
+                newspaperPresenter.voiceSearch();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            final ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (!matches.isEmpty()) {
+                String query = matches.get(0);
+                keySearch = Uri.encode(query);
+                newspaperPresenter.searchViews(keySearch);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -128,8 +170,9 @@ public class Newspaper extends Fragment
     }
 
     @Override
-    public void itemLongClick(int position) {
+    public void itemLongClick(View view, int position) {
         newspaperPresenter.addData(position);
+        Saved.getInstance().addData();
     }
 
     @Override
@@ -163,19 +206,58 @@ public class Newspaper extends Fragment
     @Override
     public void addData(int position) {
         News news = listNews.get(position);
+
         String title = news.getTitle();
         String desc = news.getDesc();
         String link = news.getLink();
         String img = news.getImage();
         String pubDate = news.getPubDate();
 
-        newsData.addNews(title, desc, link, img, pubDate);
-        toast.show();
+//        Log.d(TAG, "addData: " + link);
+        String path = link.substring(link.lastIndexOf('=') + 1, link.lastIndexOf(".") + 1);
+        path = path + "html";
+        String fileName = path.substring(path.lastIndexOf('/') + 1, path.length());
+
+//        Log.d(TAG, "file name: " + fileName);
+        Log.d(TAG, "path: " + path);
+//        String pathFile = Environment.getExternalStorageDirectory()
+//                + "/" + Config.NAME_FOLDER + "/" + path;
+//
+        downloadFile = new DownloadFile(getContext(), this);
+        downloadFile.execute(path);
+
+        newsData.addNews(title, desc, fileName, img, pubDate);
+    }
+
+    @Override
+    public void voiceSearch() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice searching...");
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         newsData.close();
+    }
+
+    @Override
+    public void initProgressDialog(Context context) {
+        progressBarDownload.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setProgress(Integer[] progress) {
+//        progressDialog.setProgress(progress[0]);
+//        progressBarDownload.setProgress(progress[0]);
+//        progressBarDownload.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        progressBarDownload.setVisibility(View.GONE);
+        snackbar.show();
     }
 }
